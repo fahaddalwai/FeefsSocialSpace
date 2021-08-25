@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.firebasesocial.upload.UploadViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".upload.UploadFragment"
+        android:background="@color/primary">
+
+
+        <Button
+            android:id="@+id/UploadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85"
+            android:text="@string/upload"
+            app:icon="@drawable/ic_baseline_camera_alt_24"
+            android:onClick="@{() -> viewModel.uploadImage()}"/>
+
+        <TextView
+            android:id="@+id/EnterButtonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/click_on_the_button_to_upload_an_image"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/UploadButton"
+            app:layout_constraintEnd_toEndOf="@+id/SelectImageButton"
+            app:layout_constraintStart_toStartOf="@+id/SelectImageButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/SelectImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/dark"
+            android:text="@string/select_an_image"
+            app:layout_constraintBottom_toTopOf="@+id/UploadButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/EnterButtonTextView"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/ImageView"
+            android:layout_width="224dp"
+            android:layout_height="227dp"
+            app:layout_constraintBottom_toTopOf="@+id/UploadButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SelectImageButton"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <EditText
+            android:id="@+id/CaptionEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/enter_the_caption"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/UploadButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ImageView"
+            app:layout_constraintVertical_bias="0.0"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

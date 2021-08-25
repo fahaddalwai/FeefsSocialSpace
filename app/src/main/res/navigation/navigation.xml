@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
+    app:startDestination="@id/uploadFragment">
+
+    <fragment
+        android:id="@+id/uploadFragment"
+        android:name="com.example.firebasesocial.upload.UploadFragment"
+        android:label="UploadFragment" />
+    <fragment
+        android:id="@+id/viewPhotosFragment"
+        android:name="com.example.firebasesocial.view.ViewPhotosFragment"
+        android:label="ViewPhotosFragment" />
+</navigation>

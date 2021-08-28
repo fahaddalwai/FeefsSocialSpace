@@ -1,8 +1,8 @@
 package com.example.firebasesocial.upload
 
-import android.app.Application
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,46 +11,73 @@ import com.example.firebasesocial.database.PostRoomDao
 import com.example.firebasesocial.repository.Repository
 import kotlinx.coroutines.launch
 
-class UploadViewModel(dataSource: PostRoomDao, application: Application) : ViewModel(){
+class UploadViewModel(dataSource: PostRoomDao) : ViewModel() {
 
-    val repository=Repository(dataSource)
 
-    var currentItem= MutableLiveData<Post>()
+
+    val repository = Repository(dataSource)
+
+    var postCaption = MutableLiveData<String>()
 
     var photo = MutableLiveData<Uri>()
 
-    var caption = MutableLiveData<String>()
-
-    var showtoast = MutableLiveData<Boolean>()
 
 
 
 
 
 
-    init{
-        showtoast.value = false
+    private val _buttonClicked = MutableLiveData<Boolean>()
+    val buttonClicked: LiveData<Boolean>
+        get() = _buttonClicked
 
+    fun setButtonToFalse() {
+        _buttonClicked.value = false
     }
 
-    fun uploadImage(){
+    fun setButtonToTrue() {
+        _buttonClicked.value = true
+    }
 
-        if(photo.value?.let { repository.uploadImage(it, caption.value.toString()) } == true){
-            showtoast.value=true
-            currentItem.value=repository.currentPost
-            uploadToDatabase(currentItem.value!!)
+
+    private val _showToast = MutableLiveData<Boolean>()
+    val showToast: LiveData<Boolean>
+        get() = _showToast
+
+    fun showToastTrue() {
+        _showToast.value = true
+    }
+
+    fun showToastFalse() {
+        _showToast.value = false
+    }
+
+
+    init {
+        setButtonToFalse()
+        showToastFalse()
+    }
+
+    fun uploadImage() {
+        if (repository.uploadImage(photo.value!!, postCaption.value!!)) {
+            showToastTrue()
+
         }
     }
 
-    fun uploadToDatabase(post:Post) {
-        viewModelScope.launch {
-            try{
-                repository.uploadToDatabase(post)
-            }catch (e:Exception){
-                Log.i("error buddy",e.toString())
+
+
+
+        fun uploadToDatabase() {
+            viewModelScope.launch {
+                try {
+                        repository.uploadToDatabase (repository.currentPost.value!!)
+
+                } catch (e: Exception) {
+                    Log.i("error buddy", e.toString())
+                }
             }
         }
-    }
 
 
 }

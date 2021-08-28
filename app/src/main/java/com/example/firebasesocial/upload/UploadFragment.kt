@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso
 
 class UploadFragment : Fragment() {
 
-    private val PICK_IMAGE_REQUEST = 1
+    private val pickImageRequest = 1
     private lateinit var viewModel: UploadViewModel
 
 
@@ -36,7 +36,7 @@ class UploadFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val dataSource = PostRoomDatabase.getInstance(application).postRoomDao
 
-        val viewModelFactory = UploadViewModelFactory(dataSource, application)
+        val viewModelFactory = UploadViewModelFactory(dataSource)
         viewModel =
             ViewModelProvider(
                 this,
@@ -51,14 +51,26 @@ class UploadFragment : Fragment() {
 
         binding.SelectImageButton.setOnClickListener { openFileChooser() }
 
-        viewModel.showtoast.observe(viewLifecycleOwner, {
-            if (it == true) {
+
+        viewModel.showToast.observe(viewLifecycleOwner,{
+            if(it) {
                 Toast.makeText(context, "Upload successful", Toast.LENGTH_SHORT).show()
-                viewModel.showtoast.value = false
+                viewModel.showToastFalse()
             }
         })
 
 
+        viewModel.buttonClicked.observe(viewLifecycleOwner,{
+            if(it==true){
+
+                        viewModel.uploadImage()
+            }
+        })
+
+        viewModel.repository.currentPost.observe(viewLifecycleOwner,{
+            viewModel.uploadToDatabase()
+            viewModel.repository.currentPost.value=null
+        })
 
 
 
@@ -70,17 +82,21 @@ class UploadFragment : Fragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        startActivityForResult(intent, pickImageRequest)
 
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            viewModel.photo.value = data.data!!
-            Picasso.get().load(viewModel.photo.value).into(binding.ImageView)
+        if (requestCode == pickImageRequest && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            viewModel.photo.value = data.data
+            LoadIntoImageView()
         }
+    }
+
+    private fun LoadIntoImageView() {
+        Picasso.get().load(viewModel.photo.value).into(binding.ImageView)
     }
 
 

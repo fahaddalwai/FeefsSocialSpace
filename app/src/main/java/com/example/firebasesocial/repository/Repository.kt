@@ -1,6 +1,7 @@
 package com.example.firebasesocial.repository
 
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.example.firebasesocial.database.Post
 import com.example.firebasesocial.database.PostRoomDao
 import com.google.firebase.database.FirebaseDatabase
@@ -12,8 +13,7 @@ import java.util.*
 
 class Repository(private val dao: PostRoomDao) {
 
-    var currentPost=Post("empty","empty")
-
+    var currentPost= MutableLiveData<Post>()
 
     fun uploadImage(photo: Uri, caption:String): Boolean {
 
@@ -23,8 +23,8 @@ class Repository(private val dao: PostRoomDao) {
 
 
         var checker=true
-
-        val fileRef: StorageReference = storage.child("images/*$(UUID.randomUUID().toString())")
+        val randomUUID=UUID.randomUUID().toString()
+        val fileRef: StorageReference = storage.child("images/*$randomUUID")
 
         fileRef.putFile(photo)
             .addOnSuccessListener { taskSnapshot ->
@@ -33,7 +33,7 @@ class Repository(private val dao: PostRoomDao) {
                 val downloadUrl = urlTask.result.toString()
                 val uploadId: String? = databaseReference.push().key
                 if (uploadId != null) {
-                    currentPost=Post(downloadUrl,caption)
+                    currentPost.value=Post(downloadUrl,caption)
                     databaseReference.child(uploadId).setValue(currentPost)
                 }
             }

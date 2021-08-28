@@ -68,8 +68,10 @@ class UploadFragment : Fragment() {
         })
 
         viewModel.repository.currentPost.observe(viewLifecycleOwner,{
-            viewModel.uploadToDatabase()
-            viewModel.repository.currentPost.value=null
+            if(it!=null){
+                viewModel.uploadToDatabase()
+                viewModel.repository.currentPost.value=null
+            }
         })
 
 

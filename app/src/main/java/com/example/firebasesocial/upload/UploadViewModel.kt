@@ -24,9 +24,6 @@ class UploadViewModel(dataSource: PostRoomDao) : ViewModel() {
 
 
 
-
-
-
     private val _buttonClicked = MutableLiveData<Boolean>()
     val buttonClicked: LiveData<Boolean>
         get() = _buttonClicked

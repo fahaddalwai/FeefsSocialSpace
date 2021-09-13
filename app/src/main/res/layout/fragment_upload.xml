@@ -28,7 +28,7 @@
             app:layout_constraintVertical_bias="0.85"
             android:text="@string/upload"
             app:icon="@drawable/ic_baseline_camera_alt_24"
-            android:onClick="@{() -> viewModel.uploadImage()}"/>
+            android:onClick="@{() -> viewModel.setButtonToTrue()}"/>
 
         <TextView
             android:id="@+id/EnterButtonTextView"

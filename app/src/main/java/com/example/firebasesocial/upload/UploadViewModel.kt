@@ -22,6 +22,14 @@ class UploadViewModel(dataSource: PostRoomDao) : ViewModel() {
     var photo = MutableLiveData<Uri>()
 
 
+    val _currentPostValue=repository.currentPost
+    val currentPostValue: LiveData<Post>
+        get() = _currentPostValue
+
+    fun setCurrentPostValueToFalse(){
+        _currentPostValue.value=null
+    }
+
 
 
     private val _buttonClicked = MutableLiveData<Boolean>()
@@ -53,6 +61,7 @@ class UploadViewModel(dataSource: PostRoomDao) : ViewModel() {
     init {
         setButtonToFalse()
         showToastFalse()
+        setCurrentPostValueToFalse()
     }
 
     fun uploadImage() {

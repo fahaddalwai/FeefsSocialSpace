@@ -62,8 +62,7 @@ class UploadFragment : Fragment() {
 
         viewModel.buttonClicked.observe(viewLifecycleOwner,{
             if(it==true){
-
-                        viewModel.uploadImage()
+                viewModel.uploadImage()
             }
         })
 
@@ -71,6 +70,13 @@ class UploadFragment : Fragment() {
             if(it!=null){
                 viewModel.uploadToDatabase()
                 viewModel.repository.currentPost.value=null
+            }
+        })
+
+        viewModel.currentPostValue.observe(viewLifecycleOwner,{
+            if(it!=null){
+                viewModel.uploadToDatabase()
+                viewModel.setCurrentPostValueToFalse()
             }
         })
 
